@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE SIGHT SBCECTL | Experience Engineering</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Tailwind Custom Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#00629B',
+                            teal: '#00629B', // Using Blue
+                            navy: '#0A192F',
+                            accent: '#F97316', // Orange
+                            dark: '#030712'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 15px rgba(0, 163, 224, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(0, 240, 255, 0.7)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: transparent;
+            /* color: #f3f4f6; */
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 12px 30px -10px rgba(0, 163, 224, 0.2);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00F0FF 0%, #00A3E0 50%, #3B82F6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-text-alt {
+            background: linear-gradient(135deg, #FFFFFF 30%, #94A3B8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-border {
+            position: relative;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(0,98,155,0.1));
+            padding: 1px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-[#030712] selection:bg-brand-accent selection:text-white transition-colors duration-300">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-card border-b border-gray-200 dark:border-white/5 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="https://i.ibb.co/tPTtLnbQ/IMG-20260804-191058.jpg" alt="IEEE SIGHT Logo" class="w-12 h-12 rounded-xl object-cover shadow-lg shadow-brand-teal/20 group-hover:scale-105 transition-transform border border-gray-200 dark:border-white/10">
+                <div>
+                    <span class="font-extrabold text-lg tracking-wider text-gray-900 dark:text-white block leading-none">IEEE <span class="text-brand-accent">SIGHT</span></span>
+                    <span class="text-[10px] text-gray-600 dark:text-gray-400 font-medium tracking-widest uppercase">Humanitarian Society</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-2 md:gap-4">
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">
+                    <a href="#domains" class="hover:text-brand-accent transition-colors">Opportunities</a>
+                </nav>
+
+                <!-- CTA Button -->
+                <div class="hidden md:flex items-center mr-2">
+                    <button onclick="openModal()" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-bold text-gray-900 dark:text-white rounded-xl group bg-gradient-to-br from-brand-teal to-brand-blue group-hover:from-brand-teal group-hover:to-brand-accent hover:text-gray-900 dark:text-white shadow-lg shadow-brand-teal/20 hover:shadow-brand-accent/40 transition-all duration-300">
+                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-100 dark:bg-gray-900 rounded-[10px] group-hover:bg-opacity-0 flex items-center gap-2">
+                            <span>Join IEEE SIGHT SBCECTL</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-brand-accent group-hover:text-gray-900 dark:text-white group-hover:translate-x-1 transition-all"></i>
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button onclick="toggleDarkMode()" class="flex p-2 rounded-xl bg-gray-200 dark:bg-white/10 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-white/20 transition-colors" title="Toggle Dark/Light Mode">
+                    <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                    <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                </button>
+
+                <!-- Mobile Menu Toggle -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-gray-300 dark:border-white/10 px-6 py-6 mt-4 space-y-4">
+            <a href="#domains" onclick="toggleMobileMenu()" class="block text-gray-700 dark:text-gray-300 hover:text-brand-accent py-2">Opportunities</a>
+            <button onclick="toggleMobileMenu(); openModal();" class="w-full mt-4 py-3 bg-gradient-to-r from-brand-teal to-brand-blue text-gray-900 dark:text-white font-bold rounded-xl shadow-lg shadow-brand-teal/30 flex items-center justify-center gap-2">
+                <span>Join IEEE SIGHT SBCECTL</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <!-- 01 HERO SECTION -->
+        <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20">
+            <!-- Background Glows & Grids -->
+            <div class="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-40"></div>
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-blue/20 rounded-full blur-[140px] pointer-events-none"></div>
+            <div class="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-brand-accent/15 rounded-full blur-[100px] pointer-events-none"></div>
+
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-brand-teal/30 text-brand-teal text-xs sm:text-sm font-semibold mb-8 animate-float shadow-lg shadow-brand-teal/10">
+                    <span class="flex h-2 w-2 rounded-full bg-brand-accent animate-ping"></span>
+                    <span>IEEE Special Interest Group on Humanitarian Societynology</span>
+                </div>
+
+                <!-- Main Headlines -->
+                <h2 class="text-xs sm:text-sm md:text-base font-extrabold tracking-[0.2em] text-brand-teal uppercase mb-4">
+                    Don't Just Study Engineering.
+                </h2>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-[1.1]">
+                    EXPERIENCE IT.
+                </h1>
+
+                <!-- Sub-bullets / Taglines -->
+                <div class="flex flex-wrap justify-center items-center gap-3 text-sm sm:text-lg font-medium text-gray-700 dark:text-gray-300 mb-8">
+                    <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10">Technology</span>
+                    <span class="text-brand-accent">•</span>
+                    <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10">Innovation</span>
+                    <span class="text-brand-accent">•</span>
+                    <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10">Social Impact</span>
+                </div>
+
+                <p class="max-w-2xl mx-auto text-base sm:text-xl text-gray-600 dark:text-gray-400 font-normal mb-10 leading-relaxed">
+                    Learn beyond the classroom. Build real skills. Connect with visionary people. Create meaningful impact.
+                </p>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-6">
+                    <button onclick="openModal()" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-teal via-brand-blue to-blue-600 hover:from-brand-accent hover:to-brand-blue text-gray-900 dark:text-white font-bold text-lg shadow-xl shadow-brand-teal/25 hover:shadow-brand-accent/40 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        <span>JOIN IEEE SIGHT</span>
+                    </button>
+                    <a href="https://i.ibb.co/0y3pt12V/IMG-20260812-231150.jpg" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card hover:bg-gray-200 dark:hover:bg-white/10 text-gray-800 dark:text-gray-200 font-semibold text-lg transition-all border border-gray-300 dark:border-white/15 hover:border-brand-teal/50 flex items-center justify-center gap-2">
+                        <span>Explore More</span>
+                        <i data-lucide="external-link" class="w-5 h-5 text-gray-600 dark:text-gray-400"></i>
+                    </a>
+                    <a href="https://i.ibb.co/JRpZncM3/IMG-20260813-064728.png" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card hover:bg-brand-accent/10 text-brand-accent font-bold text-lg transition-all border border-brand-accent/50 hover:border-brand-accent flex items-center justify-center gap-2">
+                        <span>Upcoming Events</span>
+                        <i data-lucide="calendar" class="w-5 h-5"></i>
+                    </a>
+                </div>
+
+                <!-- Live Quick Stats -->
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="glass-card p-4 rounded-2xl text-center border-gray-200 dark:border-white/5">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-brand-accent">100%</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">Practical Learning</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl text-center border-gray-200 dark:border-white/5">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-brand-accent">Global</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">IEEE Network</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl text-center border-gray-200 dark:border-white/5">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-brand-accent">0</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">Prior Skill Needed</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-2xl text-center border-gray-200 dark:border-white/5">
+                        <div class="text-2xl sm:text-3xl font-extrabold text-brand-accent">Real</div>
+                        <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">Social Impact</div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+
+        <!-- 03 WHY IEEE SIGHT? (6 Benefits) -->
+        <section class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brand-teal font-bold tracking-widest text-xs uppercase bg-brand-teal/10 px-3 py-1 rounded-full border border-brand-teal/20">03 — Why IEEE SIGHT SBCECTL?</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mt-4 mb-4">
+                        More Than Just Another Society.
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400 text-base sm:text-lg">
+                        We don't just host lectures. We give you a platform to transform tech into practical purpose.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    <!-- Benefit 1 -->
+                    <div class="glass-card p-8 rounded-3xl glass-card-hover group border-gray-200 dark:border-white/5 relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6 text-blue-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="laptop" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                            <span>💻 LEARN</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Explore cutting-edge technology through workshops, technical hands-on sessions, and interactive masterclasses.
+                        </p>
+                    </div>
+
+                    <!-- Benefit 2 -->
+                    <div class="glass-card p-8 rounded-3xl glass-card-hover group border-gray-200 dark:border-white/5 relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-brand-teal/10 border border-brand-teal/20 flex items-center justify-center mb-6 text-brand-teal group-hover:scale-110 transition-transform">
+                            <i data-lucide="rocket" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                            <span>🚀 BUILD</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Work on meaningful projects, hardware prototypes, and real-world engineering challenges with your team.
+                        </p>
+                    </div>
+
+                    <!-- Benefit 3 -->
+                    <div class="glass-card p-8 rounded-3xl glass-card-hover group border-gray-200 dark:border-white/5 relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-6 text-purple-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="mic" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                            <span>🎤 COMMUNICATE</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Sharpen your public speaking, presentation deck design, and professional team collaboration skills.
+                        </p>
+                    </div>
+
+                    <!-- Benefit 4 -->
+                    <div class="glass-card p-8 rounded-3xl glass-card-hover group border-gray-200 dark:border-white/5 relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="users" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                            <span>👥 CONNECT</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Meet supportive seniors, ambitious peers, industry experts, and global members of the IEEE ecosystem.
+                        </p>
+                    </div>
+
+                    <!-- Benefit 5 -->
+                    <div class="glass-card p-8 rounded-3xl glass-card-hover group border-gray-200 dark:border-white/5 relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-6 text-amber-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="crown" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                            <span>👑 LEAD</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Organize campus events, manage project budgets, command teams, and turn your abstract ideas into reality.
+                        </p>
+                    </div>
+
+                    <!-- Benefit 6 -->
+                    <div class="glass-card p-8 rounded-3xl glass-card-hover group border-gray-200 dark:border-white/5 relative overflow-hidden">
+                        <div class="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-6 text-rose-400 group-hover:scale-110 transition-transform">
+                            <i data-lucide="globe" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                            <span>🌍 CREATE IMPACT</span>
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Deploy technology directly to local communities and address critical human needs through engineering.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 05 A BIG ADVANTAGE (HIGHLIGHT BANNER) -->
+        <section class="py-16 relative">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="relative rounded-3xl p-8 sm:p-14 overflow-hidden bg-gradient-to-r from-brand-blue via-brand-navy to-brand-dark border-2 border-brand-teal/50 shadow-2xl shadow-brand-teal/20">
+                    <!-- Glow Accents -->
+                    <div class="absolute -top-24 -left-24 w-72 h-72 bg-brand-teal/30 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-brand-accent/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div class="relative z-10 text-center max-w-3xl mx-auto">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-teal/20 text-brand-accent text-xs sm:text-sm font-bold uppercase tracking-wider mb-6 border border-brand-teal/30">
+                            💙 A Big Advantage for First-Years
+                        </div>
+
+                        <h2 class="text-3xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+                            ALREADY AN IEEE MEMBER?
+                        </h2>
+
+                        <div class="py-3 px-6 my-6 rounded-2xl bg-brand-teal/20 border border-brand-teal/40 inline-block">
+                            <span class="text-2xl sm:text-4xl font-extrabold text-brand-accent tracking-wide">
+                                NO EXTRA SIGHT MEMBERSHIP FEE.
+                            </span>
+                        </div>
+
+                        <p class="text-gray-300 text-base sm:text-lg mb-8 leading-relaxed">
+                            If you're an IEEE member, you can participate in IEEE SIGHT without paying a separate SIGHT society membership fee!
+                        </p>
+
+                        <div class="text-center font-bold text-white text-lg sm:text-xl mb-8 flex flex-wrap justify-center items-center gap-3">
+                            <span class="text-brand-accent">One IEEE Membership</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5 text-gray-400"></i>
+                            <span class="text-white">Access to SIGHT</span>
+                        </div>
+
+                        <div class="flex flex-wrap justify-center gap-3 text-xs sm:text-sm font-semibold text-gray-300 mb-8">
+                            <span class="px-4 py-2 rounded-xl bg-white/10">Learn</span>
+                            <span class="px-4 py-2 rounded-xl bg-white/10">Participate</span>
+                            <span class="px-4 py-2 rounded-xl bg-white/10">Build</span>
+                            <span class="px-4 py-2 rounded-xl bg-white/10">Lead</span>
+                            <span class="px-4 py-2 rounded-xl bg-white/10">Impact</span>
+                        </div>
+
+                        <button onclick="openModal()" class="px-8 py-4 rounded-xl bg-brand-accent hover:bg-white text-brand-dark font-extrabold text-lg shadow-xl hover:scale-105 transition-all duration-300">
+                            BECOME PART OF SIGHT
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 06 WHAT CAN YOU DO? (Interactive Domain Cards) -->
+        <section id="domains" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brand-teal font-bold tracking-widest text-xs uppercase bg-brand-teal/10 px-3 py-1 rounded-full border border-brand-teal/20">06 — Opportunities</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mt-4 mb-4">
+                        What Can You Do?
+                    </h2>
+                    <p class="text-gray-700 dark:text-gray-300 text-lg font-medium">
+                        There's a place for your interests. <span class="text-brand-accent">You don't have to be an expert.</span>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 glass-card-hover">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center">
+                                <i data-lucide="code" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900 dark:text-white">💻 Technology</h3>
+                                <span class="text-xs text-gray-600 dark:text-gray-400">Technical Domain</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Coding</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Electronics</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">AI</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Innovation</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 glass-card-hover">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-pink-500/20 text-pink-400 flex items-center justify-center">
+                                <i data-lucide="palette" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900 dark:text-white">🎨 Creativity</h3>
+                                <span class="text-xs text-gray-600 dark:text-gray-400">Design & Media</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">UI/UX</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Design</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Content</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Media</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 glass-card-hover">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                                <i data-lucide="message-square" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900 dark:text-white">🎤 Communication</h3>
+                                <span class="text-xs text-gray-600 dark:text-gray-400">Public Relations</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Public Speaking</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Presentations</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Networking</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 glass-card-hover">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                                <i data-lucide="briefcase" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900 dark:text-white">👥 Management</h3>
+                                <span class="text-xs text-gray-600 dark:text-gray-400">Operations</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Teamwork</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Event Management</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Coordination</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 glass-card-hover">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                <i data-lucide="heart" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900 dark:text-white">🌍 Social Impact</h3>
+                                <span class="text-xs text-gray-600 dark:text-gray-400">Humanitarian Wing</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Community Projects</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Awareness</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Tech for Good</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 glass-card-hover">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-brand-teal/20 text-brand-accent flex items-center justify-center">
+                                <i data-lucide="lightbulb" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900 dark:text-white">🚀 Innovation</h3>
+                                <span class="text-xs text-gray-600 dark:text-gray-400">Research & Ideas</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Ideas</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Projects</span>
+                            <span class="px-3 py-1 rounded-lg bg-white dark:bg-white/5 text-xs text-gray-700 dark:text-gray-300">Problem Solving</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 08 YOUR 4-YEAR JOURNEY -->
+        <section id="journey" class="py-20 relative">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-brand-teal font-bold tracking-widest text-xs uppercase bg-brand-teal/10 px-3 py-1 rounded-full border border-brand-teal/20">08 — Growth Path</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mt-4 mb-4">
+                        YOUR 4-YEAR JOURNEY
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg">
+                        Start in First Year. Grow Every Year. <span class="text-brand-accent font-semibold">Don't wait until third year to start.</span>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+                    <!-- Year 1 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 relative hover:border-brand-teal/50 transition-all">
+                        <div class="text-xs font-bold text-brand-teal tracking-widest mb-2">01 — FIRST YEAR</div>
+                        <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2">EXPLORE</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">Learn • Participate • Make Connections</p>
+                        <div class="text-xs bg-white dark:bg-white/5 p-3 rounded-xl text-gray-700 dark:text-gray-300">
+                            Attend workshops, discover interests, build core confidence.
+                        </div>
+                    </div>
+
+                    <!-- Year 2 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 relative hover:border-brand-teal/50 transition-all">
+                        <div class="text-xs font-bold text-blue-400 tracking-widest mb-2">02 — SECOND YEAR</div>
+                        <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2">BUILD</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">Projects • Skills • Collaboration</p>
+                        <div class="text-xs bg-white dark:bg-white/5 p-3 rounded-xl text-gray-700 dark:text-gray-300">
+                            Take part in technical projects, co-organize events, hone tech stack.
+                        </div>
+                    </div>
+
+                    <!-- Year 3 -->
+                    <div class="glass-card p-6 rounded-3xl border-gray-300 dark:border-white/10 relative hover:border-brand-teal/50 transition-all">
+                        <div class="text-xs font-bold text-indigo-400 tracking-widest mb-2">03 — THIRD YEAR</div>
+                        <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2">LEAD</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">Teams • Events • Initiatives</p>
+                        <div class="text-xs bg-white dark:bg-white/5 p-3 rounded-xl text-gray-700 dark:text-gray-300">
+                            Lead SIG teams, anchor major hackathons, manage public relations.
+                        </div>
+                    </div>
+
+                    <!-- Year 4 -->
+                    <div class="glass-card p-6 rounded-3xl border-brand-accent/40 bg-brand-teal/10 relative hover:border-brand-accent transition-all">
+                        <div class="text-xs font-bold text-brand-accent tracking-widest mb-2">04 — FOURTH YEAR</div>
+                        <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2">INSPIRE</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">Mentor • Create Impact • Give Back</p>
+                        <div class="text-xs bg-gray-100 dark:bg-white/10 p-3 rounded-xl text-gray-800 dark:text-gray-200">
+                            Guide juniors, showcase top projects for placements, leave a legacy.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 09 WHAT YOU TAKE WITH YOU & 10 BEYOND RESUME -->
+        <section class="py-20 relative bg-brand-navy/30">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Section 09: What You Take -->
+                    <div>
+                        <span class="text-brand-teal font-bold tracking-widest text-xs uppercase bg-brand-teal/10 px-3 py-1 rounded-full border border-brand-teal/20">09 — Graduating Advantage</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white mt-4 mb-6">
+                            By the time you graduate...
+                        </h2>
+                        <p class="text-gray-700 dark:text-gray-300 mb-6 font-medium">
+                            You won't just have a degree certificate in hand. You'll have proof of execution:
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm text-gray-800 dark:text-gray-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Technical Skills</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm text-gray-800 dark:text-gray-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Real Projects</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm text-gray-800 dark:text-gray-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Leadership Experience</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm text-gray-800 dark:text-gray-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Communication Skills</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm text-gray-800 dark:text-gray-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Teamwork Experience</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm text-gray-800 dark:text-gray-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Professional Connections</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm text-gray-800 dark:text-gray-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Social Impact Experience</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 text-sm text-gray-800 dark:text-gray-200">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-accent"></i>
+                                <span>Memories & Friendships</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 10: Interview Comparison -->
+                    <div class="glass-card p-8 rounded-3xl border-brand-teal/30 relative">
+                        <span class="text-brand-accent font-bold text-xs uppercase tracking-widest block mb-4">10 — Beyond Your Resume</span>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Build experiences worth talking about.</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Imagine sitting in your final-year campus interview:</p>
+
+                        <div class="space-y-4">
+                            <!-- Bad Answer -->
+                            <div class="p-4 rounded-2xl bg-red-500/10 border border-red-500/20">
+                                <span class="text-xs font-bold text-red-400 block mb-1">❌ Ordinary Candidate Answer:</span>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 italic">"I attended classes, prepared for exams, and completed my assignments."</p>
+                            </div>
+
+                            <!-- Good Answer -->
+                            <div class="p-5 rounded-2xl bg-brand-teal/20 border border-brand-teal/40">
+                                <span class="text-xs font-bold text-brand-accent block mb-1">✓ IEEE SIGHT SBCECTL Member Answer:</span>
+                                <p class="text-sm text-gray-900 dark:text-white font-medium italic">"I worked with cross-functional teams, built technical projects, organized campus events, solved real problems, and created measurable social impact."</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <span class="text-xs text-brand-accent font-bold tracking-wider uppercase">That's the difference experience makes.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        </main>
+
+    <!-- Footer -->
+    <footer class="glass-card border-t border-gray-200 dark:border-white/5 py-8 text-center text-xs text-gray-600 dark:text-gray-400">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© IEEE SIGHT SBCECTL. Empowering students to build humanitarian technology.</p>
+        </div>
+    </footer>
+
+
+    <!-- RECRUITMENT MODAL / JOIN FORM -->
+    <div id="joinModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-card bg-brand-dark/95 border-brand-teal/40 w-full max-w-lg rounded-3xl p-6 sm:p-8 relative shadow-2xl animate-float">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white p-2">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <div id="modalContent">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-brand-teal/20 text-brand-accent mx-auto flex items-center justify-center mb-3">
+                        <i data-lucide="user-plus" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Join IEEE SIGHT SBCECTL</h3>
+                    <p class="text-xs text-gray-300 mt-1">Start your engineering journey with us today!</p>
+                </div>
+
+                <form id="membershipForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Full Name *</label>
+                        <input type="text" name="fullName" required placeholder="e.g. Alex Sharma" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-brand-teal">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Year of Study *</label>
+                            <select name="yearOfStudy" required class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-brand-teal">
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Branch/Dept *</label>
+                            <input type="text" name="branchDept" required placeholder="e.g. CSE / ECE" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-brand-teal">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Are you an IEEE Member? *</label>
+                        <select id="ieeeStatus" name="ieeeMember" onchange="toggleIeeeId()" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-brand-teal">
+                            <option value="yes">Yes (No Extra SIGHT Fee! 🎉)</option>
+                            <option value="no">No (I want to become an IEEE Member)</option>
+                        </select>
+                    </div>
+
+                    <div id="ieeeIdContainer">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">IEEE Membership Number (Optional)</label>
+                        <input type="text" name="ieeeMembershipNumber" placeholder="e.g. 98765432" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-brand-teal">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Area of Interest</label>
+                        <select name="areaOfInterest" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-base sm:text-sm focus:outline-none focus:border-brand-teal">
+                            <option value="tech">Technology & Coding</option>
+                            <option value="creative">Design & Media</option>
+                            <option value="pr">Communication & PR</option>
+                            <option value="management">Event Management</option>
+                            <option value="humanitarian">Humanitarian Projects</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-teal to-brand-blue text-white font-bold text-base shadow-lg shadow-brand-teal/30 hover:scale-[1.01] transition-transform mt-2">
+                        Submit Interest Application
+                    </button>
+                </form>
+            </div>
+
+            <!-- Success State -->
+            <div id="successContent" class="hidden text-center py-8">
+                <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center mb-4">
+                    <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Welcome Aboard! 🎉</h3>
+                <p class="text-sm text-gray-300 mb-6">
+                    Your interest application for IEEE SIGHT has been received. Our executive team will contact you shortly!
+                </p>
+                <button onclick="closeModal()" class="px-6 py-2.5 rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/20">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Dark Mode Toggle Logic
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        }
+        
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile drawer toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Modal Controls
+        function openModal() {
+            document.getElementById('joinModal').classList.remove('hidden');
+            document.getElementById('modalContent').classList.remove('hidden');
+            document.getElementById('successContent').classList.add('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('joinModal').classList.add('hidden');
+        }
+
+        function toggleIeeeId() {
+            const status = document.getElementById('ieeeStatus').value;
+            const container = document.getElementById('ieeeIdContainer');
+            if (status === 'no') {
+                container.style.opacity = '0.5';
+            } else {
+                container.style.opacity = '1';
+            }
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Submitting...';
+            submitBtn.disabled = true;
+
+            // Replace with your Google Apps Script Web App URL
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxgdZQLYOxap6sdyKX8qw97FZaxgP_6ml0cOusNh9x7712RHE2W_qCVuTuk_nLw8Dcy8A/exec';
+            
+            // If you haven't set up the Google Script yet, we just show the success message directly
+            if (scriptURL === 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+                console.warn('Google Apps Script URL is not set. Showing success message for demo purposes.');
+                setTimeout(() => {
+                    document.getElementById('modalContent').classList.add('hidden');
+                    document.getElementById('successContent').classList.remove('hidden');
+                    form.reset();
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 1000);
+                return;
+            }
+            
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => {
+                    document.getElementById('modalContent').classList.add('hidden');
+                    document.getElementById('successContent').classList.remove('hidden');
+                    form.reset(); // Clear the form
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('There was an error submitting the form. Please try again.');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                });
+        }
+    </script>
+</body>
+</html>
