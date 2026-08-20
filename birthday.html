@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE SIGHT | Volunteer Birthdays</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Tailwind Custom Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#00629B',
+                            accent: '#F97316',
+                            navy: '#0A192F',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #fff7ed 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+    </style>
+</head>
+<body class="text-brand-navy min-h-screen flex flex-col items-center justify-center p-4 selection:bg-brand-accent selection:text-white relative">
+
+    <!-- Header (simplified for standalone page) -->
+    <header class="absolute top-0 left-0 right-0 z-50 glass-card border-b py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 flex justify-center items-center">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="https://i.ibb.co/tPTtLnbQ/IMG-20260804-191058.jpg" alt="IEEE SIGHT Logo" class="w-10 h-10 rounded-xl object-cover shadow-sm border border-gray-200">
+                <div>
+                    <span class="font-extrabold text-md tracking-wider block leading-none text-brand-navy">IEEE SIGHT <span class="text-brand-accent">SBCECTL</span></span>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- Form Section -->
+    <main class="w-full max-w-md mt-24 relative z-10">
+        <div class="glass-card rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white mb-4 shadow-sm border border-gray-100 text-4xl">
+                        🎂
+                    </div>
+                    <h1 class="text-2xl font-extrabold tracking-tight mb-2 text-brand-navy">Volunteer Birthdays</h1>
+                    <p class="text-sm font-medium text-brand-navy/70">Help us celebrate you! Please enter your details below.</p>
+                </div>
+
+                <form id="birthdayForm" class="space-y-5">
+                    <div>
+                        <label for="name" class="block text-sm font-bold mb-1 text-gray-700">Full Name</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                            </div>
+                            <input type="text" id="name" name="name" required
+                                class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/60 border-2 border-transparent focus:border-white focus:ring-4 focus:ring-white/50 outline-none transition-all text-gray-800 font-medium placeholder-gray-400 shadow-inner"
+                                placeholder="Akhil">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="position" class="block text-sm font-bold mb-1 text-gray-700">Position in SIGHT</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                                <i data-lucide="briefcase" class="w-5 h-5"></i>
+                            </div>
+                            <input type="text" id="position" name="position" required
+                                class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/60 border-2 border-transparent focus:border-white focus:ring-4 focus:ring-white/50 outline-none transition-all text-gray-800 font-medium placeholder-gray-400 shadow-inner"
+                                placeholder="e.g. Volunteer">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="dob" class="block text-sm font-bold mb-1 text-gray-700">Date of Birth</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                                <i data-lucide="calendar" class="w-5 h-5"></i>
+                            </div>
+                            <input type="date" id="dob" name="dob" required
+                                class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/60 border-2 border-transparent focus:border-white focus:ring-4 focus:ring-white/50 outline-none transition-all text-gray-800 font-medium shadow-inner">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="w-full py-4 mt-4 rounded-xl bg-brand-accent hover:bg-orange-500 text-white font-extrabold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 group">
+                        <span id="btnText">Submit Details</span>
+                        <i data-lucide="send" id="btnIcon" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                        <svg id="loadingSpinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                    
+                    <div id="statusMessage" class="hidden text-center text-sm font-bold mt-4 p-4 rounded-xl border"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        const form = document.getElementById('birthdayForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const statusMessage = document.getElementById('statusMessage');
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxAwYwFDpFvEStwXKdqpgJHAzHYRXLf0YTLh9b4XF1JBR-9yPTZ5D5KCMjMLQGTeztQ/exec';
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            if(scriptURL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+                showStatus('Please configure the Google Apps Script Web App URL in the code first!', 'error');
+                return;
+            }
+
+            // Set loading state
+            submitBtn.disabled = true;
+            btnText.textContent = 'Submitting...';
+            btnIcon.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            statusMessage.classList.add('hidden');
+
+            const formData = new FormData(form);
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    if (response.ok) {
+                        showStatus('Thank you! Your details have been submitted.', 'success');
+                        form.reset();
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    showStatus('Oops! Something went wrong. Check console for details.', 'error');
+                })
+                .finally(() => {
+                    // Reset loading state
+                    submitBtn.disabled = false;
+                    btnText.textContent = 'Submit Details';
+                    btnIcon.classList.remove('hidden');
+                    loadingSpinner.classList.add('hidden');
+                });
+        });
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.classList.remove('hidden', 'bg-gray-100', 'text-gray-800', 'border-gray-200', 'bg-red-50', 'text-red-600', 'border-red-200');
+            
+            if (type === 'success') {
+                statusMessage.classList.add('bg-gray-100', 'text-gray-800', 'border-gray-200');
+            } else {
+                statusMessage.classList.add('bg-red-50', 'text-red-600', 'border-red-200');
+            }
+        }
+    </script>
+</body>
+</html>
