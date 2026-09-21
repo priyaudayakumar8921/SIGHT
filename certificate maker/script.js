@@ -131,20 +131,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Drag Logic for Draggable Text
     let isDragging = false;
     
+    // Mouse start
     draggableText.addEventListener('mousedown', (e) => {
         isDragging = true;
         e.preventDefault(); // Prevent text selection
     });
     
-    document.addEventListener('mousemove', (e) => {
+    // Touch start
+    draggableText.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        e.preventDefault(); // Prevent scrolling when touching the text
+    }, { passive: false });
+    
+    // Common move handler
+    function handleMove(clientX, clientY) {
         if (!isDragging || !templateImage) return;
         
         const rect = previewCanvas.getBoundingClientRect();
-        const containerRect = canvasContainer.getBoundingClientRect();
-        
-        // Ensure we are operating relative to the canvas rect
-        let clientX = e.clientX;
-        let clientY = e.clientY;
         
         // Clamp to canvas bounds visually
         if (clientX < rect.left) clientX = rect.left;
@@ -163,9 +166,28 @@ document.addEventListener('DOMContentLoaded', () => {
         textPos.y = imgY;
         
         updateDraggableTextPosition();
+    }
+    
+    // Mouse move
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        handleMove(e.clientX, e.clientY);
     });
     
+    // Touch move
+    document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault(); // Prevent scrolling while dragging
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+    
+    // Mouse end
     document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+    
+    // Touch end
+    document.addEventListener('touchend', () => {
         isDragging = false;
     });
 
