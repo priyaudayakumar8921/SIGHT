@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const excelUpload = document.getElementById('excelUpload');
     const excelFileName = document.getElementById('excelFileName');
     
+    const manualNameInput = document.getElementById('manualNameInput');
+    const addNameBtn = document.getElementById('addNameBtn');
+    
     const fontFamily = document.getElementById('fontFamily');
     const fontSize = document.getElementById('fontSize');
     const fontSizeDisplay = document.getElementById('fontSizeDisplay');
@@ -234,6 +237,26 @@ document.addEventListener('DOMContentLoaded', () => {
             checkReadyState();
         };
         reader.readAsArrayBuffer(file);
+    });
+
+    // Handle Manual Name Add
+    function handleManualAdd() {
+        const name = manualNameInput.value.trim();
+        if (name) {
+            namesList.push(name);
+            namesCountEl.textContent = namesList.length;
+            manualNameInput.value = '';
+            checkReadyState();
+            // Clear excel file name if they manually add something after so it's not confusing, 
+            // though they can use both together. Let's just keep the text.
+        }
+    }
+
+    addNameBtn.addEventListener('click', handleManualAdd);
+    manualNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleManualAdd();
+        }
     });
 
     // Enable button if both are present
