@@ -104,8 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const scaleY = rect.height / templateImage.height;
         
         // textPos is in original image pixel coordinates
-        const visualX = (textPos.x * scaleX) + (previewCanvas.offsetLeft || 0) + (rect.left - canvasContainer.getBoundingClientRect().left);
-        const visualY = (textPos.y * scaleY) + (previewCanvas.offsetTop || 0) + (rect.top - canvasContainer.getBoundingClientRect().top);
+        const containerRect = canvasContainer.getBoundingClientRect();
+        const visualX = (textPos.x * scaleX) + (rect.left - containerRect.left);
+        const visualY = (textPos.y * scaleY) + (rect.top - containerRect.top);
         
         draggableText.style.left = `${visualX}px`;
         draggableText.style.top = `${visualY}px`;
@@ -118,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const scale = rect.height / templateImage.height;
         
         // Scale the font size visually
-        const scaledFontSize = Math.max(10, parseInt(fontSize.value) * scale);
+        const scaledFontSize = Math.max(1, parseInt(fontSize.value) * scale);
         draggableText.style.fontSize = `${scaledFontSize}px`;
     }
 
