@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Certificate Maker</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;700&family=Playfair+Display:wght@500;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Libraries -->
+    <!-- SheetJS for Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- JSZip for zipping files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- FileSaver for downloading the zip -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>CertiMake<span>.</span></h1>
+                <p>Bulk Certificate Generator</p>
+            </div>
+
+            <div class="control-group">
+                <label for="templateUpload">1. Upload Template (Image)</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="templateUpload" accept="image/*">
+                    <div class="upload-btn">Choose Image</div>
+                    <span class="file-name" id="templateFileName">No file chosen</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="excelUpload">2. Upload Excel (Names)</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="excelUpload" accept=".xlsx, .xls">
+                    <div class="upload-btn">Choose Excel</div>
+                    <span class="file-name" id="excelFileName">No file chosen</span>
+                </div>
+                <small class="helper-text">Reads names from the first column.</small>
+            </div>
+
+            <div class="control-group">
+                <label>3. Typography Settings</label>
+                
+                <div class="setting-row">
+                    <label for="fontFamily">Font Family</label>
+                    <select id="fontFamily">
+                        <option value="Inter">Inter (Modern)</option>
+                        <option value="'Playfair Display'">Playfair Display (Serif)</option>
+                        <option value="Montserrat">Montserrat (Clean)</option>
+                        <option value="Outfit">Outfit (Geometric)</option>
+                        <option value="Arial">Arial (Standard)</option>
+                        <option value="'Times New Roman'">Times New Roman (Classic)</option>
+                    </select>
+                </div>
+
+                <div class="setting-row">
+                    <label for="fontSize">Font Size (<span id="fontSizeDisplay">60</span>px)</label>
+                    <input type="range" id="fontSize" min="10" max="200" value="60">
+                </div>
+
+                <div class="setting-row">
+                    <label for="fontColor">Font Color</label>
+                    <input type="color" id="fontColor" value="#000000">
+                </div>
+                
+                <div class="setting-row">
+                    <label for="fontWeight">Font Weight</label>
+                    <select id="fontWeight">
+                        <option value="normal">Normal</option>
+                        <option value="bold" selected>Bold</option>
+                        <option value="600">Semi-Bold</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="action-panel">
+                <div class="status-box">
+                    <span>Names loaded: <strong id="namesCount">0</strong></span>
+                </div>
+                <button id="generateBtn" class="generate-btn" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Generate Certificates
+                </button>
+            </div>
+            
+            <div id="progressContainer" class="progress-container hidden">
+                <p id="progressText">Generating: 0 / 0</p>
+                <div class="progress-bar-bg">
+                    <div id="progressBar" class="progress-bar-fill"></div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Canvas Area -->
+        <main class="workspace">
+            <div class="workspace-header">
+                <h2>Template Preview</h2>
+                <p>Drag the text box to position the name perfectly.</p>
+            </div>
+            
+            <div class="canvas-container" id="canvasContainer">
+                <div class="placeholder-text" id="canvasPlaceholder">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    <p>Upload a template to begin</p>
+                </div>
+                <canvas id="previewCanvas"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+ 
